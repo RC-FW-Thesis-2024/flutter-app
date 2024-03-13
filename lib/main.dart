@@ -1,10 +1,26 @@
 import 'package:flutter/material.dart';
 
+import 'api_client.dart';
 import 'screens/HomeScreen.dart';
 import 'screens/ActivityScreen.dart';
 
-void main() {
+Future<void> main() async {
   runApp(const MyApp());
+
+  var client = APIClient(baseUrl: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-xcipb/endpoint/data/v1/action/find');
+  var apiKey = 'QuDD0qTgxpIsOm0viZLuyCOUmRIA5pfOMwPLRCaKzZqufPgksEVq7NSLCxLkqB2b';
+  var requestBody = {
+    "dataSource": "Cluster0",
+    "database": "Thesis",
+    "collection": "workouts",
+  };
+
+  try {
+    String data = await client.fetchData(apiKey, requestBody);
+    print(data); // Process your data
+  } catch (e) {
+    print(e); // Handle any errors
+  }
 }
 
 class MyApp extends StatelessWidget {
