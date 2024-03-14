@@ -4,23 +4,10 @@ import 'api_client.dart';
 import 'screens/HomeScreen.dart';
 import 'screens/ActivityScreen.dart';
 
-Future<void> main() async {
+var client = APIClient(baseUrl: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-xcipb/endpoint/data/v1/action/find');
+
+main() {
   runApp(const MyApp());
-
-  var client = APIClient(baseUrl: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-xcipb/endpoint/data/v1/action/find');
-  var apiKey = 'QuDD0qTgxpIsOm0viZLuyCOUmRIA5pfOMwPLRCaKzZqufPgksEVq7NSLCxLkqB2b';
-  var requestBody = {
-    "dataSource": "Cluster0",
-    "database": "Thesis",
-    "collection": "workouts",
-  };
-
-  try {
-    String data = await client.fetchData(apiKey, requestBody);
-    print(data); // Process your data
-  } catch (e) {
-    print(e); // Handle any errors
-  }
 }
 
 class MyApp extends StatelessWidget {
@@ -52,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final List<Widget> _screens = [
     HomeScreen(), // HomeScreen.dart
-    ActivityScreen(), // ActivityScreen.dart
+    ActivityScreen(client: client), // ActivityScreen.dart
   ];
 
   void _onItemTapped(int index) {
