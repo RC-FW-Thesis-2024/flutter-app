@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'dart:async';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -33,7 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     Position position = await Geolocator.getCurrentPosition();
     setState(() {
-      _locationMessage = 'Lat: ${position.latitude}, Long: ${position.longitude}';
+      _locationMessage =
+      'Lat: ${position.latitude}, Long: ${position.longitude}';
     });
   }
 
@@ -44,8 +46,37 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text('Home'),
       ),
       body: Center(
-        child: Text(
-          _locationMessage,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(
+              _locationMessage,
+            ),
+            SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                  },
+                  child: Text('Start'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // Empty function for now
+                  },
+                  child: Text('Stop'),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // Empty function for now
+              },
+              child: Text('Save'),
+            ),
+          ],
         ),
       ),
     );
