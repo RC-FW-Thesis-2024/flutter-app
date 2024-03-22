@@ -37,6 +37,19 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void _stopTimer() {
+    if (_timer != null) {
+      _timer!.cancel();
+    }
+  }
+
+  void _resetTimer(){
+    print("Resetting timer");
+    setState(() {
+      _duration = const Duration();
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -75,9 +88,9 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
-              _formattedDuration, // This displays the timer
+              _formattedDuration,
               style: const TextStyle(
-                fontSize: 24, // Adjust the font size as you like
+                fontSize: 62,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -90,23 +103,24 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 ElevatedButton(
                   onPressed: () {
+                    _startTimer();
                   },
                   child: Text('Start'),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // Empty function for now
+                    _stopTimer();
                   },
                   child: Text('Stop'),
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Empty function for now
+                _resetTimer();
               },
-              child: Text('Save'),
+              child: const Text('Save'),
             ),
           ],
         ),
