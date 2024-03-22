@@ -11,6 +11,31 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String _locationMessage = "Fetching location...";
+  Duration _duration = Duration();
+  Timer? _timer;
+
+  String get _formattedDuration {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    String twoDigitMinutes = twoDigits(_duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(_duration.inSeconds.remainder(60));
+    return '${twoDigits(_duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds';
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+
+  void _startTimer() {
+    _timer?.cancel(); // Cancel any previous timer
+    _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
+      setState(() {
+        _duration = _duration + Duration(seconds: 1);
+      });
+    });
+  }
 
   @override
   void initState() {
@@ -50,9 +75,16 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
+              _formattedDuration, // This displays the timer
+              style: const TextStyle(
+                fontSize: 24, // Adjust the font size as you like
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
               _locationMessage,
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
