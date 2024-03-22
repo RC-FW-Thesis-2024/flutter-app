@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/TimerManager.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:async';
 
@@ -11,49 +12,24 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String _locationMessage = "Fetching location...";
-  Duration _duration = Duration();
-  Timer? _timer;
-
-  String get _formattedDuration {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    String twoDigitMinutes = twoDigits(_duration.inMinutes.remainder(60));
-    String twoDigitSeconds = twoDigits(_duration.inSeconds.remainder(60));
-    return '${twoDigits(_duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds';
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
-
-  void _startTimer() {
-    _timer?.cancel(); // Cancel any previous timer
-    _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
-      setState(() {
-        _duration = _duration + Duration(seconds: 1);
-      });
-    });
-  }
-
-  void _stopTimer() {
-    if (_timer != null) {
-      _timer!.cancel();
-    }
-  }
-
-  void _resetTimer(){
-    print("Resetting timer");
-    setState(() {
-      _duration = const Duration();
-    });
-  }
+  TimerManager? _timerManager;
 
   @override
   void initState() {
     super.initState();
+    _timerManager = TimerManager(
+      onUpdate: (duration) {
+        // This callback gets called whenever the timer updates
+        setState(() {});
+      },
+    );
     _determinePosition();
+  }
+
+  @override
+  void dispose() {
+    _timerManager?.dispose();
+    super.dispose();
   }
 
   Future<void> _determinePosition() async {
@@ -88,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
-              _formattedDuration,
+              _timerManager?.formattedDuration ?? '00:00:00',
               style: const TextStyle(
                 fontSize: 62,
                 fontWeight: FontWeight.bold,
@@ -103,13 +79,13 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    _startTimer();
+                    _timerManager?.startTimer();
                   },
                   child: Text('Start'),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    _stopTimer();
+                    _timerManager?.stopTimer();
                   },
                   child: Text('Stop'),
                 ),
@@ -118,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                _resetTimer();
+                _timerManager?.resetTimer();
               },
               child: const Text('Save'),
             ),
