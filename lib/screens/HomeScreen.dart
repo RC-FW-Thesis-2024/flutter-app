@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/TimerManager.dart';
 import 'package:geolocator/geolocator.dart';
+import 'dart:async';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -10,11 +12,24 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String _locationMessage = "Fetching location...";
+  TimerManager? _timerManager;
 
   @override
   void initState() {
     super.initState();
+    _timerManager = TimerManager(
+      onUpdate: (duration) {
+        // This callback gets called whenever the timer updates
+        setState(() {});
+      },
+    );
     _determinePosition();
+  }
+
+  @override
+  void dispose() {
+    _timerManager?.dispose();
+    super.dispose();
   }
 
   Future<void> _determinePosition() async {
@@ -33,7 +48,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     Position position = await Geolocator.getCurrentPosition();
     setState(() {
-      _locationMessage = 'Lat: ${position.latitude}, Long: ${position.longitude}';
+      _locationMessage =
+      'Lat: ${position.latitude}, Long: ${position.longitude}';
     });
   }
 
@@ -44,8 +60,45 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text('Home'),
       ),
       body: Center(
-        child: Text(
-          _locationMessage,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(
+              _timerManager?.formattedDuration ?? '00:00:00',
+              style: const TextStyle(
+                fontSize: 62,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              _locationMessage,
+            ),
+            const SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    _timerManager?.startTimer();
+                  },
+                  child: Text('Start'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    _timerManager?.stopTimer();
+                  },
+                  child: Text('Stop'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                _timerManager?.resetTimer();
+              },
+              child: const Text('Save'),
+            ),
+          ],
         ),
       ),
     );
