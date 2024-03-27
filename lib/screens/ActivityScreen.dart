@@ -21,7 +21,17 @@ class _ActivityScreenState extends State<ActivityScreen> {
     fetchActivities();
   }
 
+  void emptyWorkouts() {
+    setState(() {
+      workouts = [];
+    });
+  }
+
   void fetchActivities() async {
+    setState(() {
+      isLoading = true;
+    });
+
     try {
 
       final requestBody = {
@@ -54,6 +64,18 @@ class _ActivityScreenState extends State<ActivityScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Activities'),
+        leading: IconButton(
+          icon: Icon(Icons.delete),
+          onPressed: emptyWorkouts,
+          tooltip: 'Reset',
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.download),
+            onPressed: fetchActivities,
+            tooltip: 'Get',
+          ),
+        ],
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
