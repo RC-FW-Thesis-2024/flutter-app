@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/TimerManager.dart';
+// Make sure to import StopwatchManager instead of TimerManager
+import 'package:flutter_app/StopwatchManager.dart';
 import 'package:flutter_app/api_client.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:async';
 
 class HomeScreen extends StatefulWidget {
   final APIClient apiClient;
+
   const HomeScreen({Key? key, required this.apiClient}) : super(key: key);
 
   @override
@@ -14,12 +16,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String _locationMessage = "Fetching location...";
-  TimerManager? _timerManager;
+  StopwatchManager? _stopwatchManager;
 
   @override
   void initState() {
     super.initState();
-    _timerManager = TimerManager(
+    _stopwatchManager = StopwatchManager(
       onUpdate: (duration) {
         setState(() {});
       },
@@ -29,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    _timerManager?.dispose();
+    _stopwatchManager?.dispose();
     super.dispose();
   }
 
@@ -65,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
-              _timerManager?.formattedDuration ?? '00:00:00',
+              _stopwatchManager?.formattedDuration ?? '00:00:00',
               style: const TextStyle(
                 fontSize: 62,
                 fontWeight: FontWeight.bold,
@@ -80,13 +82,13 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    _timerManager?.startTimer();
+                    _stopwatchManager?.startStopwatch();
                   },
                   child: Text('Start'),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    _timerManager?.stopTimer();
+                    _stopwatchManager?.stopStopwatch();
                   },
                   child: Text('Stop'),
                 ),
@@ -95,8 +97,8 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                widget.apiClient.postWorkout(_timerManager!.formattedDuration, );
-                _timerManager?.resetTimer();
+                widget.apiClient.postWorkout(_stopwatchManager!.formattedDuration, );
+                _stopwatchManager?.resetStopwatch();
               },
               child: const Text('Save'),
             ),
