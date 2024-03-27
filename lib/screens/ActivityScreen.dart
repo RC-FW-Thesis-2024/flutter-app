@@ -23,15 +23,14 @@ class _ActivityScreenState extends State<ActivityScreen> {
 
   void fetchActivities() async {
     try {
-      const apiKey = 'QuDD0qTgxpIsOm0viZLuyCOUmRIA5pfOMwPLRCaKzZqufPgksEVq7NSLCxLkqB2b';
+
       final requestBody = {
         "dataSource": "Cluster0",
         "database": "Thesis",
         "collection": "workouts",
       };
 
-      String data = await widget.client.fetchData(apiKey, requestBody);
-      final jsonData = json.decode(data);
+      final jsonData = await widget.client.fetchData(requestBody);
 
       final List<Workout> loadedWorkouts = (jsonData['documents'] as List)
           .map((document) => Workout.fromJson(document))
@@ -41,6 +40,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
         workouts = loadedWorkouts;
         isLoading = false;
       });
+
     } catch (e) {
       setState(() {
         isLoading = false;
