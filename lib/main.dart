@@ -4,7 +4,7 @@ import 'api_client.dart';
 import 'screens/HomeScreen.dart';
 import 'screens/ActivityScreen.dart';
 
-var client = APIClient(baseUrl: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-xcipb/endpoint/data/v1/action/find');
+var client = APIClient();
 
 main() {
   runApp(const MyApp());
@@ -38,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    HomeScreen(), // HomeScreen.dart
+    HomeScreen(apiClient: client), // HomeScreen.dart
     ActivityScreen(client: client), // ActivityScreen.dart
   ];
 

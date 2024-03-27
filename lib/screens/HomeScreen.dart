@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/TimerManager.dart';
+import 'package:flutter_app/api_client.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:async';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final APIClient apiClient;
+  const HomeScreen({Key? key, required this.apiClient}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -19,7 +21,6 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _timerManager = TimerManager(
       onUpdate: (duration) {
-        // This callback gets called whenever the timer updates
         setState(() {});
       },
     );
@@ -93,7 +94,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
+                widget.apiClient.postWorkout(_timerManager!.formattedDuration, );
                 _timerManager?.resetTimer();
               },
               child: const Text('Save'),
