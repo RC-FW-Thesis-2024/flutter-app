@@ -34,7 +34,7 @@ class APIClient {
     }
   }
 
-  Future<void> postWorkout(String duration) async {
+  Future<void> postWorkout(String duration, double longitude, double latitude) async {
     String todayDate = DateTime.now().toString(); //
 
     final response = await dioClient.post(
@@ -52,7 +52,9 @@ class APIClient {
         "document": {
           "title": "Morning Run",
           "duration": duration,
-          "date": todayDate
+          "date": todayDate,
+          "latitude": latitude,
+          "longitude": longitude,
         }
       }),
     );
