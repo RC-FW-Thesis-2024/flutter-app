@@ -64,6 +64,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Activities'),
+        centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.delete),
           onPressed: emptyWorkouts,

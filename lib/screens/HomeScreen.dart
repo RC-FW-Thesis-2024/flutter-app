@@ -15,8 +15,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String _locationMessage = "Fetching location...";
+  String _locationMessage = "Location not fetched yet";
   StopwatchManager? _stopwatchManager;
+  Position? _currentPosition;
 
   @override
   void initState() {
@@ -26,7 +27,6 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {});
       },
     );
-    _determinePosition();
   }
 
   @override
@@ -51,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     Position position = await Geolocator.getCurrentPosition();
     setState(() {
+      _currentPosition = position;
       _locationMessage =
       'Lat: ${position.latitude}, Long: ${position.longitude}';
     });
@@ -61,6 +62,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.location_pin),
+          onPressed: _determinePosition,
+          tooltip: 'Reset',
+        ),
       ),
       body: Center(
         child: Column(
@@ -97,8 +104,17 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                widget.apiClient.postWorkout(_stopwatchManager!.formattedDuration, );
-                _stopwatchManager?.resetStopwatch();
+                if (_currentPosition != null) { // Ensure _currentPosition is not null
+                  widget.apiClient.postWorkout(
+                    _stopwatchManager!.formattedDuration,
+                    _currentPosition!.longitude,
+                    _currentPosition!.latitude// Step 3: Use the stored Position
+                  );
+                  _stopwatchManager?.resetStopwatch();
+                } else {
+                  // Handle the case where position is not available
+                  print("Position is not available.");
+                }
               },
               child: const Text('Save'),
             ),
