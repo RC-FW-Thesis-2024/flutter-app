@@ -85,16 +85,23 @@ class _ActivityScreenState extends State<ActivityScreen> {
         itemBuilder: (context, index) {
           final workout = workouts[index];
           return Card(
-            margin: EdgeInsets.all(8.0),
             child: ListTile(
               title: Text(workout.title),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Duration: ${workout.duration}'),
-                  Text('Date: ${workout.date}'),
-                  Text('Latitude: ${workout.latitude}'),
-                  Text('Longitude: ${workout.longitude}')
+                  Text(
+                      'Duration: ${workout.duration}',
+                      style: const TextStyle(fontSize: 12)),
+                  Text(
+                      'Date: ${workout.date}',
+                      style: const TextStyle(fontSize: 12)),
+                  Text(
+                      'Latitude: ${workout.latitude}',
+                      style: const TextStyle(fontSize: 12)),
+                  Text(
+                      'Longitude: ${workout.longitude}',
+                      style: const TextStyle(fontSize: 12))
                 ],
               ),
             ),
