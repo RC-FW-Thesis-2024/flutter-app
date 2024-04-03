@@ -3,8 +3,8 @@ class Workout {
   final String title;
   final String date;
   final String duration;
-  final String latitude;
-  final String longitude;
+  final double latitude;
+  final double longitude;
 
   Workout({
     required this.id,

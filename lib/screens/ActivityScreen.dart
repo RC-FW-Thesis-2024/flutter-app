@@ -93,6 +93,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
                 children: <Widget>[
                   Text('Duration: ${workout.duration}'),
                   Text('Date: ${workout.date}'),
+                  Text('Latitude: ${workout.latitude}'),
+                  Text('Longitude: ${workout.longitude}')
                 ],
               ),
             ),
