@@ -1,18 +1,29 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class APIClient {
   final Dio dioClient;
-  final String apiKey = 'QuDD0qTgxpIsOm0viZLuyCOUmRIA5pfOMwPLRCaKzZqufPgksEVq7NSLCxLkqB2b';
-  final String baseUrl = 'https://eu-west-2.aws.data.mongodb-api.com/app/data-xcipb/endpoint/data/v1/action/';
+  late final String apiKey;
+  late final String baseUrl;
 
   APIClient({
     Dio? dio,
-  })
-      : dioClient = dio ?? Dio();
+  }) : dioClient = dio ?? Dio() {
+    apiKey = dotenv.env['API_KEY'] ?? "default_api_key";
+    baseUrl = dotenv.env['DB_URL'] ?? "default_base_url";
+  }
 
-  Future<dynamic> fetchData(Map<String, dynamic> requestBody) async {
+
+  Future<dynamic> fetchData() async {
     try {
+
+      final requestBody = {
+        "dataSource": "Cluster0",
+        "database": "Thesis",
+        "collection": "workouts",
+      };
+
       final response = await dioClient.post(
         "${baseUrl}find",
         options: Options(

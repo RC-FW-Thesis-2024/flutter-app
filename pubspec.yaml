@@ -31,6 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   geolocator: ^10.0.0
+  flutter_dotenv: ^5.0.1
   intl: ^0.18.0
 
 
@@ -93,3 +94,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+  assets:
+    - .env

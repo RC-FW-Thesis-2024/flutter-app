@@ -33,14 +33,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
     });
 
     try {
-
-      final requestBody = {
-        "dataSource": "Cluster0",
-        "database": "Thesis",
-        "collection": "workouts",
-      };
-
-      final jsonData = await widget.client.fetchData(requestBody);
+      final jsonData = await widget.client.fetchData();
 
       final List<Workout> loadedWorkouts = (jsonData['documents'] as List)
           .map((document) => Workout.fromJson(document))
