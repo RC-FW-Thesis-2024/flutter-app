@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'api_client.dart';
 import 'screens/HomeScreen.dart';
@@ -6,7 +7,8 @@ import 'screens/ActivityScreen.dart';
 
 var client = APIClient();
 
-main() {
+Future main() async {
+  await dotenv.load(fileName: '.env');
   runApp(const MyApp());
 }
 
