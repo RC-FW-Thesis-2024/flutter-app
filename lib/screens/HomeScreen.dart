@@ -35,6 +35,16 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+
+  Future<void> resetPosition() async {
+    setState(() {
+      // Reset the location message to its initial state
+      _locationMessage = "No location data";
+      // Set the current position to null to indicate no location is selected
+      _currentPosition = null;
+    });
+  }
+
   Future<void> _determinePosition() async {
     LocationPermission permission;
 
@@ -68,6 +78,13 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: _determinePosition,
           tooltip: 'Reset',
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.clear),
+            onPressed: resetPosition,
+            tooltip: 'Get',
+          ),
+        ],
       ),
       body: Center(
         child: Column(
